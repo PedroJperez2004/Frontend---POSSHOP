@@ -47,16 +47,6 @@ Asegúrate de tener instalado el siguiente software en tu sistema:
     npm install
     ```
 
-3.  **Configurar variables de entorno:**
-    Crea un archivo `.env` en la raíz del proyecto y añade la siguiente variable. Esta debe apuntar a la URL donde se está ejecutando tu API de backend.
-
-    ```env
-    # URL de la API de backend
-    VITE_API_URL=http://localhost:3000
-    ```
-    *Nota: El prefijo `VITE_` es necesario para que Vite exponga la variable de entorno al código del lado del cliente.*
-
-
 ## Ejecutando la Aplicación
 
 Para iniciar el servidor de desarrollo (con recarga en caliente), ejecuta:
