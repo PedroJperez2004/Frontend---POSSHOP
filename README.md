@@ -38,8 +38,8 @@ Asegúrate de tener instalado el siguiente software en tu sistema:
 
 1.  **Clonar el repositorio:**
     ```bash
-    git clone <URL-DEL-REPOSITORIO>
-    cd fron-end
+    git clone https://github.com/PedroJperez2004/Frontend---POSSHOP.git
+    cd Frontend---POSSHOP
     ```
 
 2.  **Instalar dependencias:**
