@@ -30,14 +30,14 @@ const Sales = () => {
                 items={m.salesItems || []}
                 sale={m.selectedSale}
                 loading={m.itemsLoading}
-                allProducts={m.allProducts}
+                allProducts={m.products}
             />
 
             {m.saleResult && (
                 <SaleReceiptModal
                     data={m.saleResult}
                     onClose={m.handleCloseReceipt}
-                    allProducts={m.allProducts}
+                    allProducts={m.products}
                 />
             )}
 

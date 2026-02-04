@@ -1,6 +1,6 @@
 import React from 'react';
 
-const SaleReceiptModal = ({ data, products = [], onClose }) => {
+const SaleReceiptModal = ({ data, allProducts: products = [], onClose }) => {
     // Protección inicial: verificar que 'data' y 'data.result' existan
     if (!data || !data.ok || !data.result) return null;
 
@@ -11,7 +11,7 @@ const SaleReceiptModal = ({ data, products = [], onClose }) => {
         'card': 'Tarjeta',
         'transfer': 'Transferencia'
     };
-
+    console.log('proridiidididid: ', products)
     const getProductName = (productId) => {
         // Protección: Si products es undefined o nulo, o el find no devuelve nada
         if (!products || products.length === 0) return `Producto #${productId}`;

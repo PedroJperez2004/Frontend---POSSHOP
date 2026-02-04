@@ -1,6 +1,7 @@
 import { useState, useMemo, useCallback } from 'react';
 import useCreateSales from "./useCreateSales";
 import { useManagerProducts } from "../../products/hooks/useManagerProducts";
+import { useManagerTaxes } from '../../products/hooks/useManagerTaxes';
 import { useListSales } from './useListSales';
 import { useListSalesItemsId } from './uselistSalesDetailsId';
 import { useReverseSale } from './useReverseSale';
@@ -17,6 +18,10 @@ export const useManagerSales = () => {
         setSelectedCategory,
         refresh: refreshProducts
     } = useManagerProducts();
+
+    const { allTaxes } = useManagerTaxes();
+
+
 
     const { sales: rawSales, loading: salesLoading, error: salesError, list: refreshSales } = useListSales();
     const { salesItems, loading: itemsLoading, list: listItems } = useListSalesItemsId();
@@ -86,10 +91,42 @@ export const useManagerSales = () => {
     }, [rawSales, searchTerm, view, showOnlyReversed]);
 
     // --- 6. TOTALES Y CARRITO ---
-    const totals = useMemo(() => ({
-        total: cart.reduce((acc, item) => acc + (item.price * item.quantity), 0),
-        itemsCount: cart.reduce((acc, item) => acc + item.quantity, 0)
-    }), [cart]);
+    // const totals = useMemo(() => ({
+    //     total: cart.reduce((acc, item) => acc + (item.price * item.quantity), 0),
+    //     itemsCount: cart.reduce((acc, item) => acc + item.quantity, 0)
+    // }), [cart]);
+
+
+    const totals = useMemo(() => {
+        return cart.reduce((acc, item) => {
+            // 1. Buscamos el producto original para obtener su id_tax
+            const productData = allProductsRaw?.find(p => p.id === item.id);
+            const taxId = productData?.id_tax;
+
+            // 2. Buscamos el impuesto correspondiente
+            const tax = allTaxes?.find(t => t.id === taxId);
+
+            // 3. Extraemos valores (con fallback a 0 o false)
+            const percentage = Number(tax?.percentage || 0);
+            const isIncluded = tax?.included_in_price; // asumimos que viene como booleano
+
+            const itemSubtotal = item.price * item.quantity;
+
+            // 4. Calculamos el impuesto de este item
+            // Si NO está incluido, calculamos cuánto hay que sumar
+            const itemTaxTotal = !isIncluded
+                ? (itemSubtotal * (percentage / 100))
+                : 0;
+
+            return {
+                subtotal: acc.subtotal + itemSubtotal, // Suma de precios base
+                totalTax: acc.totalTax + itemTaxTotal, // Suma de impuestos extra
+                total: acc.total + itemSubtotal + itemTaxTotal, // Gran total
+                itemsCount: acc.itemsCount + item.quantity
+            };
+        }, { subtotal: 0, totalTax: 0, total: 0, itemsCount: 0 });
+    }, [cart, allProductsRaw, allTaxes]);
+
 
     const addToCart = useCallback((product) => {
         if (product.stock <= 0) return;
@@ -185,4 +222,4 @@ export const useManagerSales = () => {
         refresh: refreshProducts,
         refreshSales
     };
-};
+}

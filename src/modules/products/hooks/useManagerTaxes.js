@@ -144,6 +144,7 @@ export const useManagerTaxes = () => {
     return {
         // Datos y búsqueda
         taxes: filteredTaxes,
+        allTaxes: taxes,
         activeTaxes,
         loading,
         error,
