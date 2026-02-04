@@ -20,7 +20,7 @@ export default function ImageModal({ imageUrl, altText, onClose }) {
 
                 {/* Imagen Grande */}
                 <img 
-                    src={`http://localhost:3000${imageUrl}`} 
+                    src={imageUrl} 
                     alt={altText} 
                     className="rounded-xl shadow-2xl border border-[#2C2C3E] object-contain max-h-[80vh] w-full animate-in zoom-in-95 duration-300"
                     onClick={(e) => e.stopPropagation()} // Evita que cierre al hacer clic en la imagen

@@ -29,7 +29,7 @@ const ProductCard = ({ product, onAdd, loading }) => {
             <div className="h-32 bg-[#2C2C3E] relative flex items-center justify-center overflow-hidden">
                 {mainImage?.url ? (
                     <img 
-                        src={`http://localhost:3000${mainImage.url}`} 
+                        src={mainImage.url} 
                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" 
                         alt={product.name} 
                     />

@@ -2,6 +2,21 @@ import { NavLink } from 'react-router-dom'
 import LogoutButton from './LogoutButton' // Asegúrate que la ruta sea correcta
 
 export default function Sidebar() {
+  // 1. Sacamos el texto del localStorage y lo volvemos a convertir en objeto
+  const storedUser = JSON.parse(localStorage.getItem('user'));
+
+  // 2. Extraemos el rol (usamos "?" por si el storage está vacío y no rompa)
+  const userRole = storedUser?.role;
+
+  const menuItems = [
+    { path: '/usuarios', label: 'Usuarios', roles: ['admin'] },
+    { path: '/categorias', label: 'Categorias', roles: ['admin'] },
+    { path: '/products', label: 'Productos', roles: ['admin'] },
+    { path: '/impuestos', label: 'Impuestos', roles: ['admin'] },
+    { path: '/ventas', label: 'Ventas', roles: ['admin', 'employee'] },
+    { path: '/inventario', label: 'Inventario', roles: ['admin'] },
+  ];
+
   // Clase dinámica para los enlaces
   const linkClass = ({ isActive }) =>
     `flex items-center px-4 py-3 rounded-lg transition-all duration-200 font-medium mb-1 ${isActive
@@ -14,13 +29,6 @@ export default function Sidebar() {
 
       {/* SECCIÓN SUPERIOR: Logo y Navegación */}
       <div>
-        {/* Logo / Título */}
-        {/* <div className="flex items-center gap-3 mb-10 pl-2">
-            <div className="w-8 h-8 bg-[#FFC857] rounded-lg flex items-center justify-center shadow-[0_0_15px_rgba(255,200,87,0.3)]">
-                <span className="text-[#12121B] font-black text-xs">PS</span>
-            </div>
-            <h2 className="text-xl font-bold text-[#F5F5F5] tracking-tight">POS<span className="text-[#FFC857]">SHOP</span></h2>
-        </div> */}
 
         <div className="flex items-center gap-3 mb-10 pl-2">
           <div className="w-8 h-8 bg-[#FFC857] rounded-lg flex items-center justify-center shadow-[0_0_15px_rgba(255,200,87,0.3)] overflow-hidden">
@@ -36,13 +44,14 @@ export default function Sidebar() {
           </h2>
         </div>
         <nav className="flex flex-col">
-          <NavLink to="/usuarios" className={linkClass}>Usuarios</NavLink>
-          <NavLink to="/categorias" className={linkClass}>Categorias</NavLink>
-          <NavLink to="/products" className={linkClass}>Productos</NavLink>
-          <NavLink to="/impuestos" className={linkClass}>Impuestos</NavLink>
-          <NavLink to="/ventas" className={linkClass}>Ventas</NavLink>
-          <NavLink to="/inventario" className={linkClass}>Inventario</NavLink>
-
+          {menuItems
+            .filter(item => item.roles.includes(userRole))
+            .map(item => (
+              <NavLink key={item.path} to={item.path} className={linkClass}>
+                {item.label}
+              </NavLink>
+            ))
+          }
         </nav>
       </div>
 

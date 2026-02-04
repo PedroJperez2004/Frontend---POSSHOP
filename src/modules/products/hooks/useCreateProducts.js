@@ -11,6 +11,7 @@ export default function useCreateProducts() {
             setLoading(true)
             setError(null)
             const result = await createProducts(data)
+            
             return result.message;
 
         } catch (err) {

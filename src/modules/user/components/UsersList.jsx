@@ -123,7 +123,7 @@ export default function UsersList({
 
                                     <td className="px-4 md:px-6 py-4">
                                         <div className="flex justify-end items-center gap-2">
-                                            {user.email !== "pedro@gmail.com" && (
+                                            {user.email !== "admin@gmail.com" && (
                                                 <button
                                                     onClick={() => onToggleStatus(user)}
                                                     className={`whitespace-nowrap px-2.5 py-1.5 rounded-lg text-[9px] font-black uppercase transition-all border ${user.active
