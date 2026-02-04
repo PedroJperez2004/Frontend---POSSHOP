@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { useListTaxes } from './UseListTaxes';
+import { useListTaxes } from './useListTaxes';
 import useUpdateStatusTaxes from './useUpdateStatusTaxes';
 import useCreateTaxes from './useCreateTaxes';
 import useUpdateTaxes from './useUpdateTaxes';

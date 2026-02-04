@@ -4,7 +4,7 @@ import useUpdateProducts from "./useUpdateProducts";
 import useCreateProducts from "./useCreateProducts";
 import { useListCategories } from "./useListCategories";
 import useUpdateStatusProducts from "./useUpdateStatusProducts";
-import { useListTaxes } from "./UseListTaxes";
+import { useListTaxes } from "./useListTaxes";
 import useDeleteProducts from "./useDeleteProducts";
 
 export const useManagerProducts = () => {
