@@ -1,84 +1,54 @@
-# POSSHOP - Frontend
+# ⚛️ POSSHOP - Frontend (Cliente Web)
 
-Frontend para un sistema de Punto de Venta (POS) construido con React, Vite y Tailwind CSS.
+Interfaz de usuario del sistema **POSSHOP**. Es una **Single Page Application (SPA)** moderna, rápida y reactiva, diseñada para ofrecer una experiencia de usuario fluida y eficiente en la gestión del punto de venta.
 
-## Descripción
+---
 
-Este proyecto proporciona la interfaz de usuario para un sistema POS. Permite a los usuarios gestionar productos, inventario, ventas y usuarios. Interactúa con una API de backend para obtener y almacenar datos.
+## ✨ Funcionalidades Principales
 
-## Características
+Esta aplicación consume la API del backend de POSSHOP para proporcionar una interfaz gráfica intuitiva que permite al usuario:
 
--   **Gestión de Ventas:** Crear nuevas ventas, ver el historial de ventas y revertir ventas.
--   **Control de Inventario:** Rastrear movimientos de stock (entradas y salidas), ver el kardex de productos y gestionar los niveles de inventario.
--   **Gestión de Productos:** Funcionalidad CRUD (Crear, Leer, Actualizar, Eliminar) completa para productos, incluyendo categorización y gestión de impuestos.
--   **Gestión de Usuarios:** Gestionar usuarios y sus roles dentro del sistema.
--   **Categorías e Impuestos:** Crear y gestionar categorías de productos e impuestos.
--   **Autenticación:** Funcionalidad de inicio y cierre de sesión de usuario.
--   **Diseño Responsivo:** La aplicación está diseñada para ser utilizada en diferentes tamaños de pantalla.
+-   🔐 **Inicio de Sesión Seguro:** Interfaz para la autenticación de usuarios que se comunica con el backend para obtener tokens de acceso.
+-   📊 **Dashboard Principal:** Un panel de control que presenta información clave y accesos directos a los módulos más importantes.
+-   📦 **Gestión de Productos:**
+    -   Visualizar un listado de todos los productos con paginación.
+    -   Crear, editar y eliminar productos a través de formularios modales.
+    -   Subir y previsualizar imágenes de productos.
+-   🛒 **Interfaz de Ventas:** Un módulo dedicado para registrar nuevas ventas de forma rápida.
+-   🗂️ **Paneles de Administración:** Secciones para gestionar las categorías, impuestos y usuarios del sistema.
+-   📱 **Diseño Adaptable (Responsive):** La interfaz está construida con un enfoque *mobile-first* y es totalmente funcional en distintos dispositivos, desde ordenadores de escritorio hasta tablets y móviles.
 
-## Tech Stack y Dependencias Clave
+---
 
-El comando `npm install` instalará todas las dependencias necesarias del archivo `package.json`. Las tecnologías y librerías clave incluyen:
+## 🏗️ Arquitectura y Despliegue en Producción
 
--   **Framework**: [React](https://reactjs.org/) (`react`)
--   **Herramienta de Construcción**: [Vite](https://vitejs.dev/) (`vite`)
--   **Estilos**: [Tailwind CSS](https://tailwindcss.com/) (`tailwindcss`)
--   **Enrutamiento**: [React Router](https://reactrouter.com/) (`react-router-dom`)
--   **Cliente HTTP**: [Axios](https://axios-http.com/) (`axios`) para realizar peticiones a la API.
--   **Linting**: [ESLint](https://eslint.org/) (`eslint`) para la calidad del código.
+La arquitectura del frontend está optimizada para la velocidad y la experiencia del desarrollador, utilizando un stack moderno desplegado en una plataforma líder.
 
-## Prerrequisitos
+-   **Tipo de Aplicación:** Es una **Single Page Application (SPA)** construida con React. Esto permite una experiencia de usuario casi instantánea sin recargas de página completas durante la navegación.
 
-Asegúrate de tener instalado el siguiente software en tu sistema:
+-   **Hosting y Despliegue:**
+    -   La aplicación está desplegada en **Vercel**, una plataforma optimizada para aplicaciones de frontend modernas.
+    -   Se beneficia de un **flujo de CI/CD** conectado a un repositorio de GitHub. Cada `push` a la rama principal despliega automáticamente una nueva versión en producción.
+    -   Vercel distribuye el contenido a través de su **Edge Network (CDN) global**, lo que garantiza tiempos de carga muy bajos para usuarios de todo el mundo.
 
--   [Node.js](https://nodejs.org/) (se recomienda la versión 18 o superior)
--   [npm](https://www.npmjs.com/) (normalmente viene con Node.js)
+-   **Comunicación con el Backend:**
+    -   El frontend es completamente independiente del backend. Toda la comunicación se realiza a través de llamadas a la **API REST de POSSHOP** mediante el cliente HTTP `axios`.
 
-## Instalación y Configuración
+---
 
-1.  **Clonar el repositorio:**
-    ```bash
-    git clone https://github.com/PedroJperez2004/Frontend---POSSHOP.git
-    cd Frontend---POSSHOP
-    ```
+## 💻 Pila Tecnológica (Stack)
 
-2.  **Instalar dependencias:**
-    ```bash
-    npm install
-    ```
+| Componente | Tecnología | Razón de la Elección |
+| :--- | :--- | :--- |
+| 🔵 **Framework** | **React** | Librería líder para construir interfaces de usuario interactivas y componentizadas. |
+| ⚡ **Build Tool** | **Vite** | Proporciona un entorno de desarrollo extremadamente rápido y compila un paquete de producción altamente optimizado. |
+| ☁️ **Hosting** | **Vercel** | Plataforma ideal para el despliegue de proyectos React/Vite, con CI/CD y CDN integrados. |
+| 🎨 **Estilos** | **Tailwind CSS** | Framework de CSS *utility-first* que permite construir diseños complejos y personalizados rápidamente. |
+| 🌐 **Routing** | **React Router** | Solución estándar para el enrutamiento del lado del cliente en aplicaciones React. |
+| 📡 **Cliente HTTP**| **Axios** | Cliente robusto y fácil de usar para realizar peticiones a la API del backend. |
 
-## Ejecutando la Aplicación
+---
 
-Para iniciar el servidor de desarrollo (con recarga en caliente), ejecuta:
-```bash
-npm run dev
-```
-La aplicación estará disponible en `http://localhost:5173` (o el siguiente puerto disponible).
+## 📄 Licencia
 
-## Scripts Disponibles
-
--   `npm run dev`: Inicia el servidor de desarrollo con Vite.
--   `npm run build`: Construye la aplicación para producción en la carpeta `dist/`.
--   `npm run lint`: Analiza el código con ESLint para comprobar errores y problemas de estilo.
--   `npm run preview`: Inicia un servidor local para previsualizar la compilación de producción desde la carpeta `dist/`.
-
-## Estructura del Proyecto
-
-El proyecto sigue una arquitectura modular para separar responsabilidades:
-
-```
-src/
-├── App.jsx                # Componente principal con la configuración de enrutamiento
-├── main.jsx               # Punto de entrada de la aplicación
-├── assets/                # Activos estáticos como imágenes y SVGs
-├── components/            # Componentes de UI globales y reutilizables (ej. modales, botones)
-├── modules/               # Lógica de negocio, dividida por funcionalidad
-│   ├── products/
-│   │   ├── components/    # Componentes de React específicos del módulo de productos
-│   │   ├── hooks/         # Hooks personalizados para gestionar el estado y la lógica
-│   │   └── services/      # Funciones para realizar llamadas a la API (ej. getProducts)
-│   └── ... (otros módulos como users, sales, etc.)
-├── pages/                 # Componentes de página de nivel superior que corresponden a rutas
-├── services/              # Servicios de API globales (ej. instancia de Axios configurada)
-└── shared/                # Utilidades, hooks, constantes, etc. compartidos
-```
+Este proyecto es de mi propiedad y sirve como demostración de mis habilidades.
