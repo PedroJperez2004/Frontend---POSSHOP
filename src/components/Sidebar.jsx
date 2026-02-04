@@ -34,7 +34,7 @@ export default function Sidebar() {
           <div className="w-8 h-8 bg-[#FFC857] rounded-lg flex items-center justify-center shadow-[0_0_15px_rgba(255,200,87,0.3)] overflow-hidden">
             {/* Sustituimos el span por la imagen */}
             <img
-              src="../../posshop.png"
+              src="../../public/posshop.png"
               alt="Logo"
               className="w-full h-full object-contain p-1"
             />
