@@ -39,7 +39,10 @@ export default function Sidebar() {
               className="w-full h-full object-contain p-1"
             />
           </div>
-          <h2 className="text-xl font-bold text-[#F5F5F5] tracking-tight">
+          <h2
+            translate="no"
+            className="text-xl font-bold text-[#F5F5F5] tracking-tight notranslate"
+          >
             POS<span className="text-[#FFC857]">SHOP</span>
           </h2>
         </div>
