@@ -11,7 +11,6 @@ const SaleReceiptModal = ({ data, allProducts: products = [], onClose }) => {
         'card': 'Tarjeta',
         'transfer': 'Transferencia'
     };
-    console.log('proridiidididid: ', products)
     const getProductName = (productId) => {
         // Protección: Si products es undefined o nulo, o el find no devuelve nada
         if (!products || products.length === 0) return `Producto #${productId}`;
