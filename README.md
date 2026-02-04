@@ -4,6 +4,14 @@ Interfaz de usuario del sistema **POSSHOP**. Es una **Single Page Application (S
 
 ---
 
+## 🚧 Estado del Proyecto
+
+**Este proyecto se encuentra en desarrollo activo.** La versión desplegada actualmente es un **MVP (Producto Mínimo Viable)** que demuestra la funcionalidad de la interfaz y la conexión con el backend.
+
+Es importante destacar que la versión actual está **optimizada para una experiencia de escritorio**. La adaptabilidad completa para dispositivos móviles (responsive design) es una de las próximas prioridades en el roadmap de desarrollo.
+
+---
+
 ## ✨ Funcionalidades Principales
 
 Esta aplicación consume la API del backend de POSSHOP para proporcionar una interfaz gráfica intuitiva que permite al usuario:
@@ -16,7 +24,6 @@ Esta aplicación consume la API del backend de POSSHOP para proporcionar una int
     -   Subir y previsualizar imágenes de productos.
 -   🛒 **Interfaz de Ventas:** Un módulo dedicado para registrar nuevas ventas de forma rápida.
 -   🗂️ **Paneles de Administración:** Secciones para gestionar las categorías, impuestos y usuarios del sistema.
--   📱 **Diseño Adaptable (Responsive):** La interfaz está construida con un enfoque *mobile-first* y es totalmente funcional en distintos dispositivos, desde ordenadores de escritorio hasta tablets y móviles.
 
 ---
 
