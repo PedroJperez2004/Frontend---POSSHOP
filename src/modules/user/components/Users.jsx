@@ -11,8 +11,8 @@ export default function Users() {
     const {
         list, users, listError, formError, searchTerm, setSearchTerm, actionLoading,
         listLoading, isModalOpen, setIsModalOpen, userToEdit, successMessage,
-        confirmConfig, setConfirmConfig, handleEditClick,
-        handleCloseModal, handleToggleStatus, onConfirmToggle, onSubmitRegister
+        confirmConfig, handleEditClick,
+        handleCloseModal, handleToggleStatus, onConfirmToggle, onSubmitRegister, handleCancelConfirm
     } = useManagerUsers();
 
     const { handleCopy, copiedId } = useHandleCopy();
@@ -84,7 +84,7 @@ export default function Users() {
 
             <ConfirmModal
                 isOpen={confirmConfig.isOpen}
-                onClose={() => setConfirmConfig({ isOpen: false, user: null })}
+                onClose={() => handleCancelConfirm()}
                 onConfirm={onConfirmToggle}
                 title={confirmConfig.user?.active ? "Desactivar Usuario" : "Activar Usuario"}
                 message={`¿Estás seguro de que deseas cambiar el estado de "${confirmConfig.user?.userName}"?`}
