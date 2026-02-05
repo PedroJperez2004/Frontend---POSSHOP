@@ -13,7 +13,6 @@ export function useListProducts() {
             setError(null)
 
             const result = await listProducts()
-            console.log(result.Products)
             setProducts(result.Products || [])
             setError(null);
 

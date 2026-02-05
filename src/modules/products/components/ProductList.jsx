@@ -1,25 +1,26 @@
 import { useState } from 'react';
 import { usePagination } from '../../../shared/hooks/usePagination';
-import PaginationControls from '../../../components/PaginationControls'; 
-import ImageModal from '../../../components/ImageModal'; 
+import PaginationControls from '../../../components/PaginationControls';
+import ImageModal from '../../../components/ImageModal';
+import { getFullImageUrl } from '../../../shared/hooks/imageHelper';
 
-export default function ProductList({ 
-    products, 
-    loading, 
-    error, 
-    onToggleStatus, 
-    onEdit, 
-    onDelete, 
-    handleCopy, 
-    copiedId 
+export default function ProductList({
+    products,
+    loading,
+    error,
+    onToggleStatus,
+    onEdit,
+    onDelete,
+    handleCopy,
+    copiedId
 }) {
     const [selectedImage, setSelectedImage] = useState(null);
 
-    const { 
-        currentPage, 
-        setCurrentPage, 
-        paginatedItems, 
-        totalPages 
+    const {
+        currentPage,
+        setCurrentPage,
+        paginatedItems,
+        totalPages
     } = usePagination(products, 12);
 
     if (error) return (
@@ -30,17 +31,17 @@ export default function ProductList({
 
     return (
         <div className="w-full h-full min-h-[600px] flex flex-col font-sans">
-            
+
             {selectedImage && (
-                <ImageModal 
-                    imageUrl={selectedImage.url} 
-                    altText={selectedImage.name} 
-                    onClose={() => setSelectedImage(null)} 
+                <ImageModal
+                    imageUrl={selectedImage.url}
+                    altText={selectedImage.name}
+                    onClose={() => setSelectedImage(null)}
                 />
             )}
-            
+
             <div className="relative flex flex-col flex-1 bg-[#1E1E2F] border border-[#2C2C3E] rounded-xl shadow-xl overflow-hidden">
-                
+
                 {loading && (
                     <div className="absolute inset-0 z-30 flex items-center justify-center bg-[#12121B]/40 backdrop-blur-[1px] transition-all">
                         <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-[#FFC857]"></div>
@@ -54,19 +55,22 @@ export default function ProductList({
                                 <th className="px-4 md:px-6 py-4 text-[#FFC857] w-[60px]">#</th>
                                 <th className="px-4 md:px-6 py-4 text-[#FFC857] w-[140px]">ID</th>
                                 <th className="px-4 md:px-6 py-4 w-[250px]">Producto</th>
-                                <th className="px-4 md:px-6 py-4">Descripción</th> {/* Nueva Columna */}
+                                {/* Se asigna un ancho mínimo amplio para evitar que colapse sobre Stock */}
+                                <th className="px-4 md:px-6 py-4 w-[300px]">Descripción</th>
                                 <th className="px-4 md:px-6 py-4 text-center w-[100px]">Stock</th>
                                 <th className="px-4 md:px-6 py-4 w-[120px]">Precio</th>
-                                <th className="px-4 md:px-6 py-4 w-[110px]">Impuesto</th> 
+                                <th className="px-4 md:px-6 py-4 w-[110px]">Impuesto</th>
                                 <th className="px-4 md:px-6 py-4 text-center w-[130px]">Estado</th>
                                 <th className="px-4 md:px-6 py-4 text-right w-[190px]">Acciones</th>
                             </tr>
                         </thead>
                         <tbody className={`divide-y divide-[#2C2C3E] transition-opacity duration-300 ${loading ? 'opacity-30' : 'opacity-100'}`}>
                             {paginatedItems.map((product, index) => {
-                                const mainImage = product.images?.find(img => img.isMain) || product.images?.[0];
+                                // const mainImage = product.images?.find(img => img.isMain) || product.images?.[0];
+                                const rawImage = product.images?.find(img => img.isMain) || product.images?.[0];
+                                const mainImage = rawImage ? { ...rawImage, url: getFullImageUrl(rawImage.url) } : null;
+
                                 const idStr = String(product.id);
-                                
                                 return (
                                     <tr key={product.id} className="hover:bg-[#2C2C3E]/40 transition-colors group">
                                         <td className="px-4 md:px-6 py-4 text-xs font-bold text-[#A0A0B0]">
@@ -78,7 +82,7 @@ export default function ProductList({
                                                     <span className="opacity-40">...</span>
                                                     {idStr.length > 6 ? idStr.slice(-6) : idStr}
                                                 </div>
-                                                <button 
+                                                <button
                                                     onClick={() => handleCopy(product.id)}
                                                     className="ml-2 p-1.5 rounded-md bg-[#FFC857] text-[#1E1E2F] opacity-0 group-hover/id:opacity-100 transition-all hover:scale-110 active:scale-95 shadow-lg shadow-[#FFC857]/20"
                                                 >
@@ -93,7 +97,7 @@ export default function ProductList({
 
                                         <td className="px-4 md:px-6 py-4">
                                             <div className="flex items-center gap-3">
-                                                <div 
+                                                <div
                                                     onClick={() => mainImage && setSelectedImage({ url: mainImage.url, name: product.name })}
                                                     className="w-10 h-10 rounded-lg bg-[#12121B] border border-[#3A3A55] overflow-hidden flex items-center justify-center shrink-0 cursor-zoom-in hover:border-[#FFC857] transition-all group/img"
                                                 >
@@ -126,11 +130,10 @@ export default function ProductList({
                                         </td>
 
                                         <td className="px-4 md:px-6 py-4 text-center">
-                                            <span className={`inline-block px-2 py-0.5 rounded text-[10px] font-black border ${
-                                                product.stock <= 5 
-                                                ? 'bg-[#E74C3C]/10 text-[#E74C3C] border-[#E74C3C]/20 shadow-[0_0_10px_rgba(231,76,60,0.1)]' 
+                                            <span className={`inline-block px-2 py-0.5 rounded text-[10px] font-black border ${product.stock <= 5
+                                                ? 'bg-[#E74C3C]/10 text-[#E74C3C] border-[#E74C3C]/20 shadow-[0_0_10px_rgba(231,76,60,0.1)]'
                                                 : 'bg-[#3A3A55]/50 text-[#F5F5F5] border-transparent'
-                                            }`}>
+                                                }`}>
                                                 {product.stock}
                                             </span>
                                         </td>
@@ -170,7 +173,7 @@ export default function ProductList({
                                                     className={`px-2.5 py-1.5 rounded-lg text-[9px] font-black uppercase transition-all border ${product.active
                                                         ? "border-[#E74C3C]/20 bg-[#E74C3C]/10 text-[#E74C3C] hover:bg-[#E74C3C] hover:text-white"
                                                         : "border-[#27AE60]/20 bg-[#27AE60]/10 text-[#27AE60] hover:bg-[#27AE60] hover:text-white"
-                                                    }`}
+                                                        }`}
                                                 >
                                                     {product.active ? "Desactivar" : "Activar"}
                                                 </button>
@@ -190,7 +193,7 @@ export default function ProductList({
                 </div>
 
                 <div className="mt-auto border-t border-[#2C2C3E] bg-[#1E1E2F] z-20">
-                    <PaginationControls 
+                    <PaginationControls
                         currentPage={currentPage}
                         totalPages={totalPages}
                         onPageChange={setCurrentPage}

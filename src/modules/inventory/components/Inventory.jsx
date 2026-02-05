@@ -29,7 +29,6 @@ const Inventory = () => {
     } = useManagerInventory();
 
     const { handleCopy, copiedId } = useHandleCopy();
-
     return (
         <div className="grid grid-cols-1 h-screen gap-6 p-6 overflow-hidden box-border font-sans text-[#F5F5F5] bg-[#12121B]">
             

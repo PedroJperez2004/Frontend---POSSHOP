@@ -1,7 +1,9 @@
 import React from 'react';
+import { getFullImageUrl } from '../../../shared/hooks/imageHelper';
 
 const ProductCard = ({ product, onAdd, loading }) => {
-    const mainImage = product.images?.find(img => img.isMain) || product.images?.[0];
+    const rawImage = product.images?.find(img => img.isMain) || product.images?.[0];
+    const mainImage = rawImage ? { ...rawImage, url: getFullImageUrl(rawImage.url) } : null;
 
     // Si está cargando, mostramos una versión "Skeleton" o con efecto de pulso
     if (loading) {
@@ -28,14 +30,14 @@ const ProductCard = ({ product, onAdd, loading }) => {
             {/* Contenedor de Imagen */}
             <div className="h-32 bg-[#2C2C3E] relative flex items-center justify-center overflow-hidden">
                 {mainImage?.url ? (
-                    <img 
-                        src={mainImage.url} 
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" 
-                        alt={product.name} 
+                    <img
+                        src={mainImage.url}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                        alt={product.name}
                     />
                 ) : (
                     <div className="flex flex-col items-center gap-1 opacity-20">
-                         <svg className="w-8 h-8 text-[#A0A0B0]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg className="w-8 h-8 text-[#A0A0B0]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.587-1.587a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                         </svg>
                         <span className="text-[8px] text-[#A0A0B0] font-bold uppercase tracking-tighter">Sin imagen</span>

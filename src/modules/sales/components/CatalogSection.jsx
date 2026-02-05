@@ -11,7 +11,7 @@ const CatalogSection = ({ products = [], loading, addToCart }) => {
         setCurrentPage, 
         paginatedItems, 
         totalPages 
-    } = usePagination(products, 12);
+    } = usePagination(products, 25);
 
     // Si la lista de productos cambia (por búsqueda o categoría), volvemos a la página 1
     useEffect(() => {

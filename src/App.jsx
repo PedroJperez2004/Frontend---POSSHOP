@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import LoginPage from './pages/LoginPage.jsx'
 
 
@@ -19,9 +19,9 @@ function App() {
 
         {/* Dashboard con layout */}
         <Route
-          path="/"
-          element={<DashboardLayout />}
-        >
+          path="/" element={<DashboardLayout />}>
+          {/* 1. Esta es la clave: Redirigir la raíz a ventas */}
+          <Route index element={<Navigate to="/ventas" replace />} />
           <Route path="products" element={<ProductsPage />} />
           <Route path="usuarios" element={<UsersPage />} />
           <Route path="categorias" element={<CategoriesPage />} />

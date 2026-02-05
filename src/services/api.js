@@ -1,41 +1,88 @@
+// import axios from "axios";
+
+// const api = axios.create({
+//     baseURL: import.meta.env.VITE_API_URL,
+//     withCredentials: true,
+//     // headers: {
+//     //     'Content-Type': 'application/json'
+//     // }
+// });
+
+// api.interceptors.response.use(
+//     response => response,
+//     async error => {
+//         const originalRequest = error.config;
+//         if (originalRequest?.url?.includes('/users/login')) {
+//             return Promise.reject(error);
+//         }
+//         // 🔴 NO tocar el refresh
+//         if (originalRequest?.url?.includes('/auth/refresh-token')) {
+//             return Promise.reject(error);
+//         }
+
+//         if (error.response?.status === 401 && !originalRequest._retry) {
+//             originalRequest._retry = true;
+
+//             try {
+//                 await api.post('/auth/refresh-token');
+//                 return api(originalRequest);
+//             } catch {
+//                 window.location.href = '/login';
+//                 return Promise.reject(error);
+//             }
+//         }
+
+//         return Promise.reject(error);
+//     }
+// );
+
+
+
+// export default api;
+
+
 import axios from "axios";
 
 const api = axios.create({
     baseURL: import.meta.env.VITE_API_URL,
-    withCredentials: true,
-    // headers: {
-    //     'Content-Type': 'application/json'
-    // }
+    withCredentials: true, // 👈 VITAL para que las cookies viajen
 });
 
 api.interceptors.response.use(
-    response => response,
-    async error => {
+    (response) => response,
+    async (error) => {
         const originalRequest = error.config;
-        if (originalRequest?.url?.includes('/users/login')) {
-            return Promise.reject(error);
-        }
-        // 🔴 NO tocar el refresh
-        if (originalRequest?.url?.includes('/auth/refresh-token')) {
+
+        // 1. Si es login o ya intentamos refrescar y falló, directo al rechazo
+        if (
+            originalRequest?.url?.includes('/users/login') ||
+            originalRequest?.url?.includes('/auth/refresh-token') ||
+            originalRequest._retry // 👈 Evita bucles infinitos si el refresh también da 401
+        ) {
             return Promise.reject(error);
         }
 
-        if (error.response?.status === 401 && !originalRequest._retry) {
+        // 2. Si el error es 401 (Unauthorized), intentamos el refresh
+        if (error.response?.status === 401) {
             originalRequest._retry = true;
 
             try {
+                // El backend recibirá la cookie refresh_token y responderá con una nueva access_token
                 await api.post('/auth/refresh-token');
+
+                // Re-intentamos la petición original que falló
                 return api(originalRequest);
-            } catch {
+            } catch (refreshError) {
+                // Si el refresh falla, es que la sesión murió de verdad
+                console.error("Sesión expirada, redirigiendo...");
+                // Aquí podrías limpiar algún estado de Redux/Zustand antes de irte
                 window.location.href = '/login';
-                return Promise.reject(error);
+                return Promise.reject(refreshError);
             }
         }
 
         return Promise.reject(error);
     }
 );
-
-
 
 export default api;
