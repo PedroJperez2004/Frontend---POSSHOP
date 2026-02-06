@@ -1,61 +1,77 @@
-# ⚛️ POSSHOP - Frontend (Cliente Web)
+# 🛍️ POSSHOP - Sistema de Punto de Venta (Frontend)
 
-Interfaz de usuario del sistema **POSSHOP**. Es una **Single Page Application (SPA)** moderna, rápida y reactiva, diseñada para ofrecer una experiencia de usuario fluida y eficiente en la gestión del punto de venta.
+![Estado del Proyecto: En Producción](https://img.shields.io/badge/Estado-En_Producci%C3%B3n-brightgreen?style=for-the-badge)
 
----
+## 📝 Descripción
 
-## 🚧 Estado del Proyecto
+**POSSHOP Frontend** es la interfaz de usuario para el sistema de Punto de Venta (POSSHOP). Esta aplicación web interactúa con el [Backend de POSSHOP](https://github.com/PedroJperez2004/Backend---POSSHOP) para gestionar todas las operaciones, desde la autenticación de usuarios hasta el procesamiento de ventas, la gestión de productos y el control de inventario.
 
-**Este proyecto se encuentra en desarrollo activo.** La versión desplegada actualmente es un **MVP (Producto Mínimo Viable)** que demuestra la funcionalidad de la interfaz y la conexión con el backend.
+Este proyecto representa la **primera versión funcional** de la plataforma, y aunque **ya se encuentra en un entorno de producción**, se mantiene en **desarrollo activo**. Esto significa que estoy trabajando en nuevas características, optimizaciones y mejoras para hacer de POSSHOP una solución aún más completa y amigable para el usuario.
 
-Es importante destacar que la versión actual está **optimizada para una experiencia de escritorio**. La adaptabilidad completa para dispositivos móviles (responsive design) es una de las próximas prioridades en el roadmap de desarrollo.
+## ✨ Características Principales
 
----
+*   **🔐 Autenticación y Autorización:** Interfaz para el inicio y cierre de sesión de usuarios, y gestión de roles.
+*   **📦 Gestión de Productos:** CRUD intuitivo para productos, categorías e impuestos.
+*   **📈 Control de Inventario:** Visualización y gestión del stock en tiempo real.
+*   **💸 Procesamiento de Ventas:** Interfaz de punto de venta (POS) para registrar y procesar transacciones.
+*   **📊 Historial de Ventas:** Consulta y detalles de ventas anteriores.
+*   **🎨 Interfaz de Usuario Responsiva:** Diseño adaptable para diferentes tamaños de pantalla.
+*   **🏗️ Arquitectura Modular:** Estructura de código organizada por módulos para facilitar el desarrollo y mantenimiento.
 
-## ✨ Funcionalidades Principales
+## 🚀 Tecnologías Utilizadas
 
-Esta aplicación consume la API del backend de POSSHOP para proporcionar una interfaz gráfica intuitiva que permite al usuario:
+Este proyecto utiliza un stack de tecnologías moderno y eficiente para construir una interfaz de usuario robusta y reactiva.
 
--   🔐 **Inicio de Sesión Seguro:** Interfaz para la autenticación de usuarios que se comunica con el backend para obtener tokens de acceso.
--   📊 **Dashboard Principal:** Un panel de control que presenta información clave y accesos directos a los módulos más importantes.
--   📦 **Gestión de Productos:**
-    -   Visualizar un listado de todos los productos con paginación.
-    -   Crear, editar y eliminar productos a través de formularios modales.
-    -   Subir y previsualizar imágenes de productos.
--   🛒 **Interfaz de Ventas:** Un módulo dedicado para registrar nuevas ventas de forma rápida.
--   🗂️ **Paneles de Administración:** Secciones para gestionar las categorías, impuestos y usuarios del sistema.
+### **Frontend**
+![React](https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=black)
+![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![React Router](https://img.shields.io/badge/React_Router-CA4245?style=for-the-badge&logo=react-router&logoColor=white)
+![Axios](https://img.shields.io/badge/Axios-5A29E4?style=for-the-badge&logo=axios&logoColor=white)
 
----
+### **Herramientas de Desarrollo**
+![ESLint](https://img.shields.io/badge/ESLint-4B32C3?style=for-the-badge&logo=eslint&logoColor=white)
 
-## 🏗️ Arquitectura y Despliegue en Producción
+## 🔧 Puesta en Marcha Local
 
-La arquitectura del frontend está optimizada para la velocidad y la experiencia del desarrollador, utilizando un stack moderno desplegado en una plataforma líder.
+Para correr este proyecto en tu máquina local, sigue esta guía paso a paso.
 
--   **Tipo de Aplicación:** Es una **Single Page Application (SPA)** construida con React. Esto permite una experiencia de usuario casi instantánea sin recargas de página completas durante la navegación.
+### **1. Prerrequisitos**
 
--   **Hosting y Despliegue:**
-    -   La aplicación está desplegada en **Vercel**, una plataforma optimizada para aplicaciones de frontend modernas.
-    -   Se beneficia de un **flujo de CI/CD** conectado a un repositorio de GitHub. Cada `push` a la rama principal despliega automáticamente una nueva versión en producción.
-    -   Vercel distribuye el contenido a través de su **Edge Network (CDN) global**, lo que garantiza tiempos de carga muy bajos para usuarios de todo el mundo.
+Asegúrate de tener instalado el siguiente software:
 
--   **Comunicación con el Backend:**
-    -   El frontend es completamente independiente del backend. Toda la comunicación se realiza a través de llamadas a la **API REST de POSSHOP** mediante el cliente HTTP `axios`.
+*   **Node.js:** Versión 18 o superior.
+*   **npm:** Generalmente se instala con Node.js.
+*   **POSSHOP Backend:** El backend de POSSHOP debe estar corriendo y accesible. Consulta su [repositorio](https://github.com/PedroJperez2004/Backend---POSSHOP) para instrucciones de instalación.
 
----
+### **2. Guía de Instalación**
 
-## 💻 Pila Tecnológica (Stack)
+Sigue estos comandos en tu terminal:
 
-| Componente | Tecnología | Razón de la Elección |
-| :--- | :--- | :--- |
-| 🔵 **Framework** | **React** | Librería líder para construir interfaces de usuario interactivas y componentizadas. |
-| ⚡ **Build Tool** | **Vite** | Proporciona un entorno de desarrollo extremadamente rápido y compila un paquete de producción altamente optimizado. |
-| ☁️ **Hosting** | **Vercel** | Plataforma ideal para el despliegue de proyectos React/Vite, con CI/CD y CDN integrados. |
-| 🎨 **Estilos** | **Tailwind CSS** | Framework de CSS *utility-first* que permite construir diseños complejos y personalizados rápidamente. |
-| 🌐 **Routing** | **React Router** | Solución estándar para el enrutamiento del lado del cliente en aplicaciones React. |
-| 📡 **Cliente HTTP**| **Axios** | Cliente robusto y fácil de usar para realizar peticiones a la API del backend. |
+1.  **Clona el repositorio y entra al directorio `fron-end`:**
+    ```bash
+    git clone git@github.com:PedroJperez2004/Frontend---POSSHOP.git # Asumiendo este es el repo del frontend
+    cd fron-end
+    ```
 
----
+2.  **Instala todas las dependencias del proyecto:**
+    Esto instalará React, Tailwind CSS, React Router DOM, Axios y todo lo necesario que está definido en `package.json`.
+    ```bash
+    npm install
+    ```
 
-## 📄 Licencia
+3.  **Crea y configura las variables de entorno:**
+    Crea un archivo llamado `.env` en la raíz del proyecto (`fron-end`). Aquí deberás especificar la URL base de tu API backend.
 
-Este proyecto es de mi propiedad y sirve como demostración de mis habilidades.
+    ```dotenv
+    VITE_API_BASE_URL=http://localhost:3000
+    NODE_ENV=development
+    ```
+    > **Nota:** Asegúrate de que `http://localhost:3000` (o la dirección que uses) coincida con la URL donde está corriendo tu backend de POSSHOP.
+
+4.  **¡Inicia el servidor de desarrollo!**
+    ```bash
+    npm run dev
+    ```
+
+Una vez que el servidor de desarrollo se inicie, podrás acceder a la aplicación frontend a través de la URL que Vite te proporcione (generalmente `http://localhost:5173`). Asegúrate de que tu backend esté funcionando correctamente para que la aplicación pueda cargar los datos y realizar operaciones.
