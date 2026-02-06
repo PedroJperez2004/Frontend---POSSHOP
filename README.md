@@ -73,3 +73,9 @@ Sigue estos comandos en tu terminal:
     ```
 
 Una vez que el servidor de desarrollo se inicie, podrás acceder a la aplicación frontend a través de la URL que Vite te proporcione (generalmente `http://localhost:5173`). Asegúrate de que tu backend esté funcionando correctamente para que la aplicación pueda cargar los datos y realizar operaciones.
+
+## 🚀 Despliegue en Vercel
+
+Este proyecto está desplegado en Vercel, lo que permite una integración continua y despliegues automáticos cada vez que se realizan cambios en la rama principal.
+
+
