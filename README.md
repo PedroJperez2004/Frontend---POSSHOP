@@ -12,11 +12,9 @@ Este proyecto representa la **primera versión funcional** de la plataforma, y a
 
 *   **🔐 Autenticación y Autorización:** Interfaz para el inicio y cierre de sesión de usuarios, y gestión de roles.
 *   **📦 Gestión de Productos:** CRUD intuitivo para productos, categorías e impuestos.
-*   **📈 Control de Inventario:** Visualización y gestión del stock en tiempo real.
-*   **💸 Procesamiento de Ventas:** Interfaz de punto de venta (POS) para registrar y procesar transacciones.
+*   **📈 Control de Inventario:** Visualización y gestión del stock.
+*   **💸 Procesamiento de Ventas:** Interfaz de punto de venta (POS) para registrar y procesar ventas.
 *   **📊 Historial de Ventas:** Consulta y detalles de ventas anteriores.
-*   **🎨 Interfaz de Usuario Responsiva:** Diseño adaptable para diferentes tamaños de pantalla.
-*   **🏗️ Arquitectura Modular:** Estructura de código organizada por módulos para facilitar el desarrollo y mantenimiento.
 
 ## 🚀 Tecnologías Utilizadas
 
@@ -50,7 +48,7 @@ Sigue estos comandos en tu terminal:
 
 1.  **Clona el repositorio y entra al directorio `fron-end`:**
     ```bash
-    git clone git@github.com:PedroJperez2004/Frontend---POSSHOP.git # Asumiendo este es el repo del frontend
+    git clone git@github.com:PedroJperez2004/Frontend---POSSHOP.git 
     cd fron-end
     ```
 
