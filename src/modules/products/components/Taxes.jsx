@@ -24,79 +24,71 @@ const Taxes = () => {
     const isActive = confirmConfig.tax?.is_active;
 
     return (
-        /* CAMBIO VITAL: 
-           1. h-screen: obliga al componente a no medir más que la pantalla.
-           2. flex flex-col: para que los hijos se repartan el espacio vertical.
-           3. overflow-hidden: para que nada se salga del marco principal.
-        */
-        <div className="flex flex-col h-screen w-full gap-6 p-6 overflow-hidden box-border font-sans text-[#F5F5F5] bg-[#12121B]">
-            {/* --- ENCABEZADO Y ACCIONES (ESPACIADO REDUCIDO) --- */}
-            <div className="shrink-0 mb-4 flex flex-col md:flex-row md:items-center justify-between gap-3">
-                <div className="space-y-0.5 min-w-0"> {/* Reducido de space-y-1 a 0.5 */}
-                    {/* Título + Contador */}
-                    <div className="flex items-center gap-3 flex-nowrap">
-                        <h2 className="text-xl md:text-2xl font-bold text-[#F5F5F5] leading-tight truncate">
-                            Gestión de <span className="text-[#FFC857]">Impuestos</span>
-                        </h2>
+        /* Reducimos padding global en móviles (p-4) */
+        <div className="flex flex-col h-screen w-full p-4 sm:p-6 overflow-hidden box-border font-sans text-[#F5F5F5] bg-[#12121B]">
+            
+            <div className="flex flex-col h-full min-h-0 min-w-0">
 
-                        <div className="flex-shrink-0">
-                            <DynamicCounter
-                                count={taxes.length}
-                                label="Tasas"
-                                variant="warning"
-                                loading={loading}
+                {/* --- ENCABEZADO: Espacios ultra-compactos --- */}
+                <div className="shrink-0 mb-4 sm:mb-6 flex flex-col md:flex-row md:items-center justify-between gap-3 sm:gap-4">
+                    <div className="space-y-0.5 sm:space-y-1 min-w-0">
+                        <div className="flex items-center gap-2 sm:gap-3 flex-nowrap">
+                            <h2 className="text-xl sm:text-2xl font-bold text-[#F5F5F5] leading-none truncate">
+                                Gestión de <span className="text-[#FFC857]">Impuestos</span>
+                            </h2>
+
+                            <div className="shrink-0">
+                                <DynamicCounter
+                                    count={taxes.length}
+                                    label="Tasas"
+                                    variant="warning"
+                                    loading={loading}
+                                />
+                            </div>
+                        </div>
+
+                        <p className="text-[#A0A0B0] text-[11px] sm:text-xs leading-none truncate opacity-70">
+                            Administra las tasas impositivas de tus productos
+                        </p>
+                    </div>
+
+                    {/* Bloque de Herramientas: Buscador y Botones en una línea */}
+                    <div className="flex items-center gap-2 w-full md:w-auto">
+                        <div className="flex-1 md:w-56">
+                            <InputSearch
+                                searchTerm={searchTerm}
+                                setSearchTerm={setSearchTerm}
+                                textPlaceholder="Buscar..."
+                            />
+                        </div>
+
+                        <div className="flex items-center gap-2 shrink-0">
+                            <ButtonAction
+                                action={() => setIsModalOpen(true)}
+                                text="+ Nuevo"
+                            />
+
+                            <ButtonRefresh
+                                onClick={refresh}
+                                isLoading={loading}
                             />
                         </div>
                     </div>
-
-                    <p className="text-[#A0A0B0] text-[11px] md:text-xs leading-none truncate">
-                        Administra las tasas impositivas de tus productos
-                    </p>
                 </div>
 
-                {/* Bloque de Herramientas (Más compacto) */}
-                <div className="flex items-center gap-2 w-full md:w-auto mt-1 md:mt-0">
-                    <div className="relative flex-1 md:flex-none md:w-56">
-                        <InputSearch
-                            searchTerm={searchTerm}
-                            setSearchTerm={setSearchTerm}
-                            textPlaceholder="Buscar..."
-                        />
-                    </div>
-
-                    <div className="flex items-center gap-1.5">
-                        <ButtonAction
-                            action={() => setIsModalOpen(true)}
-                            text={
-                                <span>
-                                    + Nuevo <span className="hidden md:inline">Impuesto</span>
-                                </span>
-                            }
-                            className="text-[11px] font-black px-3 py-2"
-                        />
-
-                        <ButtonRefresh
-                            onClick={refresh}
-                            isLoading={loading}
-                        />
-                    </div>
+                {/* --- CONTENEDOR DE LA LISTA: Con fondo sutil para separar --- */}
+                <div className="flex-1 min-h-0 bg-[#1E1E2F]/20 rounded-t-2xl sm:rounded-none overflow-hidden">
+                    <TaxesList
+                        taxes={taxes}
+                        loading={loading}
+                        error={error}
+                        onEdit={handleEditClick}
+                        onToggleStatus={handleToggleStatus}
+                        onDelete={handleDeleteClick}
+                        handleCopy={handleCopy}
+                        copiedId={copiedId}
+                    />
                 </div>
-            </div>
-            {/* CONTENEDOR DE LA LISTA: 
-               flex-1: toma todo el espacio sobrante.
-               min-h-0: evita que el flexbox se desborde si el contenido es grande.
-            */}
-            <div className="flex-1 min-h-0">
-                <TaxesList
-                    taxes={taxes}
-                    loading={loading}
-                    error={error}
-                    onEdit={handleEditClick}
-                    onToggleStatus={handleToggleStatus}
-                    onDelete={handleDeleteClick}
-                    handleCopy={handleCopy}
-                    copiedId={copiedId}
-                />
             </div>
 
             {/* MODALES */}
@@ -114,10 +106,10 @@ const Taxes = () => {
 
             <ConfirmModal
                 isOpen={confirmConfig.isOpen}
-                title={isDeleteMode ? "Eliminar Impuesto" : (isActive ? "Desactivar Impuesto" : "Activar Impuesto")}
+                title={isDeleteMode ? "Eliminar" : (isActive ? "Desactivar" : "Activar")}
                 message={isDeleteMode
-                    ? `¿Estás seguro de que deseas eliminar permanentemente el impuesto "${taxName}"?`
-                    : `¿Deseas ${isActive ? 'desactivar' : 'activar'} el impuesto "${taxName}"?`}
+                    ? `¿Eliminar "${taxName}" permanentemente?`
+                    : `¿Cambiar estado de "${taxName}"?`}
                 variant={isDeleteMode ? "danger" : "warning"}
                 loading={actionLoading}
                 onConfirm={onConfirmToggle}
