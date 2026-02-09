@@ -92,7 +92,7 @@ export const useManagerProducts = () => {
         }
     };
 
-    // 🔄 1. COMBINAR DATOS (CATEGORÍAS E IMPUESTOS)
+    //  1. COMBINAR DATOS (CATEGORÍAS E IMPUESTOS)
     // Aquí es donde inyectamos 'taxName' y 'categoryName'
     const productsWithExtraInfo = useMemo(() => {
         if (!products) return [];

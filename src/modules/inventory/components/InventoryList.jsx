@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { usePagination } from '../../../shared/hooks/usePagination';
 import PaginationControls from '../../../components/PaginationControls';
+import InventoryCardsView from './InventoryCardslView'; // El componente que creamos antes
 
 const InventoryList = ({ 
     movements = [], 
@@ -12,10 +13,9 @@ const InventoryList = ({
     handleCopy, 
     copiedId 
 }) => {
-    // El ordenamiento visual sí lo mantenemos local para rapidez de la UI
     const [sortOrder, setSortOrder] = useState('desc');
 
-    // 1. Lógica de Ordenamiento (sobre lo que ya filtró el manager)
+    // 1. Lógica de Ordenamiento
     const sortedMovements = useMemo(() => {
         return [...movements].sort((a, b) => {
             return sortOrder === 'desc' ? b.id - a.id : a.id - b.id;
@@ -43,7 +43,7 @@ const InventoryList = ({
         </div>
     );
 
-    // Componente interno para IDs copiables
+    // Componente interno para IDs copiables (usado en la tabla desktop)
     const CopyableId = ({ value, prefix = "", color = "text-[#A0A0B0]" }) => {
         if (!value) return <span className="text-[#A0A0B0] font-normal opacity-10 italic text-[10px]">--</span>;
         const valStr = String(value);
@@ -75,48 +75,39 @@ const InventoryList = ({
     return (
         <div className="w-full relative font-sans h-full flex flex-col">
             
-            {/* Header Interno de la Tabla */}
+            {/* Header: Filtros y Ordenamiento */}
             <div className="mb-4 flex flex-wrap justify-between items-center gap-4 px-2">
-                <h3 className="text-[#FFC857] text-[10px] font-black tracking-widest uppercase italic">Kardex de Inventario</h3>
-                
                 <div className="flex items-center gap-3">
-                    {/* SELECT DE PRODUCTOS (Conectado al Manager) */}
                     <div className="flex items-center gap-2">
                         <span className="text-[10px] text-[#A0A0B0] font-bold uppercase tracking-tight">Producto:</span>
                         <select
                             value={selectedProduct}
                             onChange={(e) => {
                                 setSelectedProduct(e.target.value);
-                                setCurrentPage(1); // Reset de página al filtrar
+                                setCurrentPage(1);
                             }}
                             className="bg-[#2C2C3E] text-[#F5F5F5] text-[10px] font-bold border border-[#3E3E52] rounded-lg px-3 py-1.5 focus:outline-none focus:border-[#FFC857] transition-colors cursor-pointer outline-none"
                         >
                             <option value="all">TODOS LOS PRODUCTOS</option>
                             {products.map(prod => (
-                                <option key={prod.id} value={prod.id}>
-                                    {prod.name.toUpperCase()}
-                                </option>
+                                <option key={prod.id} value={prod.id}>{prod.name.toUpperCase()}</option>
                             ))}
                         </select>
                     </div>
 
-                    {/* BOTÓN ORDENAR */}
-                    <div className="flex items-center gap-2">
-                        <span className="text-[10px] text-[#A0A0B0] font-bold uppercase tracking-tight">Ordenar:</span>
-                        <button
-                            onClick={() => {
-                                setSortOrder(sortOrder === 'desc' ? 'asc' : 'desc');
-                                setCurrentPage(1);
-                            }}
-                            className="bg-[#2C2C3E] hover:bg-[#FFC857] hover:text-[#1E1E2F] px-3 py-1.5 rounded-lg text-[10px] font-black border border-[#3E3E52] transition-all flex items-center gap-2"
-                        >
-                            {sortOrder === 'desc' ? <>MÁS RECIENTES ↓</> : <>MÁS ANTIGUOS ↑</>}
-                        </button>
-                    </div>
+                    <button
+                        onClick={() => {
+                            setSortOrder(sortOrder === 'desc' ? 'asc' : 'desc');
+                            setCurrentPage(1);
+                        }}
+                        className="bg-[#2C2C3E] hover:bg-[#FFC857] hover:text-[#1E1E2F] px-3 py-1.5 rounded-lg text-[10px] font-black border border-[#3E3E52] transition-all flex items-center gap-2"
+                    >
+                        {sortOrder === 'desc' ? <>MÁS RECIENTES</> : <>MÁS ANTIGUOS</>}
+                    </button>
                 </div>
             </div>
 
-            {/* Contenedor de la Tabla */}
+            {/* Contenedor Principal con Scroll */}
             <div className="bg-[#1E1E2F] border border-[#2C2C3E] rounded-xl shadow-2xl overflow-hidden flex flex-col flex-1 relative">
                 {loading && (
                     <div className="absolute inset-0 z-50 flex items-center justify-center bg-[#12121B]/40 backdrop-blur-[1px]">
@@ -124,63 +115,81 @@ const InventoryList = ({
                     </div>
                 )}
 
-                <div className="overflow-x-auto custom-scrollbar flex-1">
-                    <table className="w-full text-left border-collapse min-w-[1000px]">
-                        <thead>
-                            <tr className="bg-[#2C2C3E] text-[#F5F5F5] uppercase text-[9px] md:text-[10px] tracking-widest font-bold">
-                                <th className="px-6 py-4 text-[#FFC857] w-[60px]">#</th>
-                                <th className="px-6 py-4 text-[#FFC857]">ID Movimiento</th>
-                                <th className="px-6 py-4">ID Producto</th>
-                                <th className="px-6 py-4 text-center">Tipo</th>
-                                <th className="px-6 py-4 text-right">Cantidad</th>
-                                <th className="px-6 py-4">Fecha / Hora</th>
-                                <th className="px-6 py-4">Nota</th>
-                            </tr>
-                        </thead>
-                        <tbody className={`divide-y divide-[#2C2C3E] ${loading ? 'opacity-30' : 'opacity-100'}`}>
-                            {paginatedItems.length > 0 ? (
-                                paginatedItems.map((mov, index) => {
-                                    const isEntry = mov.type === 'in';
-                                    return (
-                                        <tr key={mov.id} className="hover:bg-[#2C2C3E]/40 transition-colors group">
-                                            <td className="px-6 py-4 text-xs font-bold text-[#A0A0B0]">
-                                                {((currentPage - 1) * 12) + index + 1}
-                                            </td>
-                                            <td className="px-6 py-4"><CopyableId value={mov.id} prefix="#" /></td>
-                                            <td className="px-6 py-4"><CopyableId value={mov.product_id} prefix="ID:" color="text-[#FFC857]/80" /></td>
-                                            <td className="px-6 py-4 text-center">
-                                                <div className="flex items-center justify-center gap-1.5">
-                                                    <span className={`w-1.5 h-1.5 rounded-full ${isEntry ? 'bg-[#27AE60] shadow-[0_0_8px_#27AE60]' : 'bg-[#E74C3C] shadow-[0_0_8px_#E74C3C]'}`}></span>
-                                                    <span className={`text-[10px] font-black uppercase ${isEntry ? 'text-[#27AE60]' : 'text-[#E74C3C]'}`}>
-                                                        {isEntry ? 'Entrada' : 'Salida'}
-                                                    </span>
-                                                </div>
-                                            </td>
-                                            <td className={`px-6 py-4 text-right font-black text-sm ${isEntry ? 'text-[#27AE60]' : 'text-[#E74C3C]'}`}>
-                                                {isEntry ? '+' : '-'}{mov.quantity}
-                                            </td>
-                                            <td className="px-6 py-4"><span className="text-[10px] text-[#A0A0B0] font-medium uppercase">{formatDate(mov.createdAt)}</span></td>
-                                            <td className="px-6 py-4">
-                                                <p className="text-[#A0A0B0] text-[10px] italic line-clamp-1 max-w-[200px] group-hover:text-[#F5F5F5]">
-                                                    {mov.note || "--"}
-                                                </p>
-                                            </td>
-                                        </tr>
-                                    );
-                                })
-                            ) : (
-                                <tr>
-                                    <td colSpan="7" className="px-6 py-12 text-center text-[#A0A0B0] text-xs italic">
-                                        No hay movimientos que coincidan con los filtros seleccionados.
-                                    </td>
+                <div className="flex-1 overflow-auto custom-scrollbar">
+                    
+                    {/* VISTA DE TARJETAS (Móvil) */}
+                    <div className="lg:hidden">
+                        <InventoryCardsView
+                            paginatedItems={paginatedItems}
+                            currentPage={currentPage}
+                            totalPages={totalPages}
+                            setCurrentPage={setCurrentPage}
+                            handleCopy={handleCopy}
+                            copiedId={copiedId}
+                            loading={loading}
+                            formatDate={formatDate}
+                        />
+                    </div>
+
+                    {/* VISTA DE TABLA (Desktop) */}
+                    <div className="hidden lg:block">
+                        <table className="w-full text-left border-collapse min-w-[1000px]">
+                            <thead>
+                                <tr className="sticky top-0 z-20 bg-[#2C2C3E] text-[#F5F5F5] uppercase text-[9px] md:text-[10px] tracking-widest font-bold shadow-sm">
+                                    <th className="px-6 py-4 text-[#FFC857] w-[60px]">#</th>
+                                    <th className="px-6 py-4 text-[#FFC857]">ID Movimiento</th>
+                                    <th className="px-6 py-4">ID Producto</th>
+                                    <th className="px-6 py-4 text-center">Tipo</th>
+                                    <th className="px-6 py-4 text-right">Cantidad</th>
+                                    <th className="px-6 py-4">Fecha / Hora</th>
+                                    <th className="px-6 py-4">Nota</th>
                                 </tr>
-                            )}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody className={`divide-y divide-[#2C2C3E] ${loading ? 'opacity-30' : 'opacity-100'}`}>
+                                {paginatedItems.length > 0 ? (
+                                    paginatedItems.map((mov, index) => {
+                                        const isEntry = mov.type === 'in';
+                                        return (
+                                            <tr key={mov.id} className="hover:bg-[#2C2C3E]/40 transition-colors group">
+                                                <td className="px-6 py-4 text-xs font-bold text-[#A0A0B0]">
+                                                    {((currentPage - 1) * 12) + index + 1}
+                                                </td>
+                                                <td className="px-6 py-4"><CopyableId value={mov.id} prefix="#" /></td>
+                                                <td className="px-6 py-4"><CopyableId value={mov.product_id} prefix="ID:" color="text-[#FFC857]/80" /></td>
+                                                <td className="px-6 py-4 text-center">
+                                                    <div className="flex items-center justify-center gap-1.5">
+                                                        <span className={`w-1.5 h-1.5 rounded-full ${isEntry ? 'bg-[#27AE60] shadow-[0_0_8px_#27AE60]' : 'bg-[#E74C3C] shadow-[0_0_8px_#E74C3C]'}`}></span>
+                                                        <span className={`text-[10px] font-black uppercase ${isEntry ? 'text-[#27AE60]' : 'text-[#E74C3C]'}`}>
+                                                            {isEntry ? 'Entrada' : 'Salida'}
+                                                        </span>
+                                                    </div>
+                                                </td>
+                                                <td className={`px-6 py-4 text-right font-black text-sm ${isEntry ? 'text-[#27AE60]' : 'text-[#E74C3C]'}`}>
+                                                    {isEntry ? '+' : '-'}{mov.quantity}
+                                                </td>
+                                                <td className="px-6 py-4"><span className="text-[10px] text-[#A0A0B0] font-medium uppercase">{formatDate(mov.createdAt)}</span></td>
+                                                <td className="px-6 py-4">
+                                                    <p className="text-[#A0A0B0] text-[10px] italic line-clamp-1 max-w-[200px] group-hover:text-[#F5F5F5]">
+                                                        {mov.note || "--"}
+                                                    </p>
+                                                </td>
+                                            </tr>
+                                        );
+                                    })
+                                ) : (
+                                    <tr>
+                                        <td colSpan="7" className="px-6 py-12 text-center text-[#A0A0B0] text-xs italic">
+                                            No hay movimientos registrados.
+                                        </td>
+                                    </tr>
+                                )}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
 
-                {/* Footer de Paginación */}
-                <div className="shrink-0 border-t border-[#2C2C3E] bg-[#1a1a2e]/50">
+                {/* Footer de Paginación (Visible solo en Desktop, las tarjetas ya tienen su propia paginación o puedes centralizarla aquí) */}
+                <div className="hidden lg:block shrink-0 border-t border-[#2C2C3E] bg-[#1a1a2e]/50">
                     <PaginationControls 
                         currentPage={currentPage} 
                         totalPages={totalPages} 

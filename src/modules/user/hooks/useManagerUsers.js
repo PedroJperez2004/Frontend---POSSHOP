@@ -5,7 +5,7 @@ import { useUpdateStatusUser } from "./useUpdateStatusUser.js";
 import { useUpdateUser } from "./useUpdateUser.js";
 
 export function useManagerUsers() {
-    // 1. Hooks de Datos con desestructuración y alias 🖇️
+    // 1. Hooks de Datos con desestructuración y alias 
     const { list, loading: listLoading, error: listError, users } = useListUsers();
 
     const {
@@ -29,14 +29,14 @@ export function useManagerUsers() {
         setError: setUpdateError
     } = useUpdateUser();
 
-    // 2. Estados de UI 🪟
+    // 2. Estados de UI 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [userToEdit, setUserToEdit] = useState(null);
     const [searchTerm, setSearchTerm] = useState("");
     const [successMessage, setSuccessMessage] = useState(null);
     const [confirmConfig, setConfirmConfig] = useState({ isOpen: false, user: null });
 
-    // 3. Lógica de Filtrado 🔍
+    // 3. Lógica de Filtrado 
     const filteredUsers = useMemo(() => {
         const searchWords = searchTerm.toLowerCase().trim().split(/\s+/);
         if (searchWords.length === 0 || searchWords[0] === "") return users;
@@ -54,7 +54,7 @@ export function useManagerUsers() {
         });
     }, [searchTerm, users]);
 
-    // 4. Handlers de Modales 🖱️
+    // 4. Handlers de Modales 
     const handleEditClick = (user) => {
         setUserToEdit(user);
         setIsModalOpen(true);
@@ -64,7 +64,7 @@ export function useManagerUsers() {
         setIsModalOpen(false);
         setSuccessMessage(null);
         setUserToEdit(null);
-        // Limpiamos errores al cerrar para que el modal abra "limpio" 🧹
+        // Limpiamos errores al cerrar para que el modal abra "limpio" 
         if (setRegisterError) setRegisterError(null);
         if (setUpdateError) setUpdateError(null);
     };
@@ -78,7 +78,7 @@ export function useManagerUsers() {
         if (setStatusError) setStatusError(null);
     };
 
-    // 5. Acciones Asíncronas 🚀
+    // 5. Acciones Asíncronas 
     const onConfirmToggle = async () => {
         const { user } = confirmConfig;
         if (!user) return;
@@ -112,11 +112,11 @@ export function useManagerUsers() {
         users: filteredUsers,
         list,
 
-        // Estados de Carga Unificados ⏳
+        // Estados de Carga Unificados 
         listLoading,
         actionLoading: registerLoading || updateLoading || statusLoading,
 
-        // Errores Unificados ⚠️
+        // Errores Unificados 
         listError,
         formError: registerError || updateError,
         statusError,

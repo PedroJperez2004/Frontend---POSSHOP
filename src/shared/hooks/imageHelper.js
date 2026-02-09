@@ -7,7 +7,6 @@ export const getFullImageUrl = (url) => {
     }
 
     // Si es una ruta local, le pegamos la URL del backend
-    // Asegúrate de que VITE_API_URL no termine en "/" para que no se duplique
     const baseUrl = import.meta.env.VITE_API_URL.endsWith('/')
         ? import.meta.env.VITE_API_URL.slice(0, -1)
         : import.meta.env.VITE_API_URL;

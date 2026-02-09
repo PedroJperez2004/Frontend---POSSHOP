@@ -1,21 +1,21 @@
 import { usePagination } from '../../../shared/hooks/usePagination';
-import PaginationControls from '../../../components/PaginationControls'; 
-
-export default function UsersList({ 
-    users = [], 
-    loading, 
-    error, 
-    onToggleStatus, 
-    onEdit, 
-    handleCopy, 
-    copiedId 
+import PaginationControls from '../../../components/PaginationControls';
+import UserCardsView from './UserCardsView';
+export default function UsersList({
+    users = [],
+    loading,
+    error,
+    onToggleStatus,
+    onEdit,
+    handleCopy,
+    copiedId
 }) {
-    const { 
-        currentPage, 
-        setCurrentPage, 
-        paginatedItems, 
-        totalPages 
-    } = usePagination(users, 10);
+    const {
+        currentPage,
+        setCurrentPage,
+        paginatedItems,
+        totalPages
+    } = usePagination(users, 30);
 
     if (error) return (
         <div className="p-4 rounded-lg bg-[#E74C3C]/10 border border-[#E74C3C]/20 text-[#E74C3C] font-sans text-sm">
@@ -24,7 +24,7 @@ export default function UsersList({
     );
 
     return (
-        /* CAMBIO: Se añade h-full y min-h para permitir que el componente llene el espacio disponible */
+        /* DISEÑO ORIGINAL: Contenedor principal */
         <div className="w-full h-full min-h-[600px] relative font-sans flex flex-col">
 
             {/* Overlay de carga */}
@@ -34,12 +34,28 @@ export default function UsersList({
                 </div>
             )}
 
-            {/* CAMBIO: Se añade flex-1 para que el contenedor oscuro ocupe el alto total del padre */}
+            {/* DISEÑO ORIGINAL: Contenedor oscuro con flex-1 */}
             <div className="bg-[#1E1E2F] border border-[#2C2C3E] rounded-xl shadow-xl overflow-hidden flex flex-col flex-1">
-                
-                {/* CAMBIO: Reemplazamos max-h fijo por flex-1 para que el scroll sea dinámico según el espacio */}
+
                 <div className="overflow-x-auto overflow-y-auto custom-scrollbar flex-1">
-                    <table className="w-full text-left border-collapse min-w-[800px] md:min-w-[1000px] table-fixed">
+
+                    {/* --- VISTA DE CARDS (Solo Mobile/Tablet) --- */}
+                    {/* Se muestra solo hasta lg (1024px) */}
+                    {/* VISTA DE CARDS (Mobile/Tablet) */}
+                    <UserCardsView
+                        users={users}
+                        paginatedItems={paginatedItems}
+                        currentPage={currentPage}
+                        totalPages={totalPages}
+                        setCurrentPage={setCurrentPage}
+                        handleCopy={handleCopy}
+                        copiedId={copiedId}
+                        onToggleStatus={onToggleStatus}
+                        onEdit={onEdit}
+                    />
+
+                    {/* --- TU DISEÑO DE TABLA ORIGINAL (Solo Desktop) --- */}
+                    <table className="hidden lg:table w-full text-left border-collapse min-w-[800px] md:min-w-[1000px] table-fixed">
                         <thead className="sticky top-0 z-20 bg-[#2C2C3E]">
                             <tr className="text-[#F5F5F5] uppercase text-[9px] md:text-[10px] tracking-widest font-bold">
                                 <th className="px-4 md:px-6 py-4 text-[#FFC857] w-[50px]">#</th>
@@ -107,7 +123,7 @@ export default function UsersList({
                                         <span className={`inline-block px-2 py-0.5 rounded text-[9px] font-black uppercase tracking-widest border ${user.role === 'admin'
                                             ? 'bg-[#FFC857]/10 text-[#FFC857] border-[#FFC857]/20'
                                             : 'bg-[#3A3A55]/50 text-[#A0A0B0] border-transparent'
-                                        }`}>
+                                            }`}>
                                             {user.role}
                                         </span>
                                     </td>
@@ -129,7 +145,7 @@ export default function UsersList({
                                                     className={`whitespace-nowrap px-2.5 py-1.5 rounded-lg text-[9px] font-black uppercase transition-all border ${user.active
                                                         ? "border-[#E74C3C]/20 bg-[#E74C3C]/10 text-[#E74C3C] hover:bg-[#E74C3C] hover:text-white"
                                                         : "border-[#27AE60]/20 bg-[#27AE60]/10 text-[#27AE60] hover:bg-[#27AE60] hover:text-white"
-                                                    }`}
+                                                        }`}
                                                 >
                                                     {user.active ? "Desactivar" : "Activar"}
                                                 </button>
@@ -150,10 +166,10 @@ export default function UsersList({
                     </table>
                 </div>
 
-                {/* CAMBIO: Se añade mt-auto para que los controles de página siempre se peguen abajo */}
+                {/* DISEÑO ORIGINAL: Paginación pegada abajo */}
                 {users.length > 0 && (
                     <div className="shrink-0 mt-auto border-t border-[#2C2C3E] bg-[#1E1E2F]">
-                        <PaginationControls 
+                        <PaginationControls
                             currentPage={currentPage}
                             totalPages={totalPages}
                             onPageChange={setCurrentPage}

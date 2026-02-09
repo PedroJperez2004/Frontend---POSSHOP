@@ -6,36 +6,36 @@ import useUpdateTaxes from './useUpdateTaxes';
 import useDeleteTaxes from './useDeleteTaxes';
 
 export const useManagerTaxes = () => {
-    // 📋 Lista principal
+    //  Lista principal
     const { list, loading, error, setError, taxes } = useListTaxes();
     const [searchTerm, setSearchTerm] = useState("");
 
-    // 🪟 Estados de UI
+    //  Estados de UI
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [successMessage, setSuccessMessage] = useState(null);
     const [taxToEdit, setTaxToEdit] = useState(null);
     const [actionLoading, setActionLoading] = useState(false);
 
-    // 1️⃣ Configuración de confirmación con 'mode'
+    //  Configuración de confirmación con 'mode'
     const [confirmConfig, setConfirmConfig] = useState({
         isOpen: false,
         tax: null,
         mode: null // 'status' o 'delete'
     });
 
-    // 🗑️ Hook de eliminación
+    //  Hook de eliminación
     const { deleteTax, error: deleteError, setError: setDeleteError } = useDeleteTaxes();
 
     // ➕ Hook de Creación
     const { create, error: createError, setError: setCreateError } = useCreateTaxes();
 
-    // 📝 Hook de Edición
+    //  Hook de Edición
     const { update, error: updateError, setError: setUpdateError } = useUpdateTaxes();
 
-    // 🔄 Hook de cambio de Estado
+    //  Hook de cambio de Estado
     const { updateStatus, error: statusError, setError: setStatusError } = useUpdateStatusTaxes();
 
-    // 🔍 Lógica de filtrado
+    //  Lógica de filtrado
     const activeTaxes = useMemo(() => taxes?.filter(t => t.is_active) || [], [taxes]);
 
     const filteredTaxes = useMemo(() => {
@@ -49,7 +49,7 @@ export const useManagerTaxes = () => {
         });
     }, [searchTerm, taxes]);
 
-    // 🖱️ Manejadores de Modal Formulario
+    //  Manejadores de Modal Formulario
     const handleEditClick = (tax) => {
         setTaxToEdit(tax);
         setIsModalOpen(true);
@@ -63,12 +63,12 @@ export const useManagerTaxes = () => {
         if (setUpdateError) setUpdateError(null);
     };
 
-    // 🖱️ Manejadores de Confirmación
+    //  Manejadores de Confirmación
     const handleToggleStatus = (tax) => {
         setConfirmConfig({ isOpen: true, tax, mode: 'status' });
     };
 
-    // 2️⃣ Nuevo manejador para eliminar
+    // 2️Nuevo manejador para eliminar
     const handleDeleteClick = (tax) => {
         setConfirmConfig({ isOpen: true, tax, mode: 'delete' });
     };
@@ -79,7 +79,7 @@ export const useManagerTaxes = () => {
         if (setDeleteError) setDeleteError(null);
     };
 
-    // 🚀 3️⃣ Acción Unificada: Confirmar (Status o Delete)
+    //  Acción Unificada: Confirmar (Status o Delete)
     const onConfirmAction = async () => {
         const { tax, mode } = confirmConfig;
         if (!tax) return;
@@ -107,7 +107,7 @@ export const useManagerTaxes = () => {
         }
     };
 
-    // 🚀 Acción: Enviar Formulario (Crear/Editar)
+    //  Acción: Enviar Formulario (Crear/Editar)
     const onSubmitTax = async (e) => {
         e.preventDefault();
         const formData = new FormData(e.target);

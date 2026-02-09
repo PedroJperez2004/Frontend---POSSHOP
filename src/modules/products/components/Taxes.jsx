@@ -2,16 +2,16 @@ import TaxesList from './TaxesList.jsx';
 import InputSearch from '../../../components/InputSearch.jsx';
 import TaxFormModal from './TaxFormModal.jsx';
 import ButtonRefresh from '../../../components/ButtonRefresh.jsx';
-import ConfirmModal from '../../../components/ConfirmModal.jsx'; 
+import ConfirmModal from '../../../components/ConfirmModal.jsx';
 import ButtonAction from '../../../components/ButtonAction.jsx';
 import useHandleCopy from '../../../shared/hooks/useHandleCopy.js';
 import { useManagerTaxes } from '../hooks/useManagerTaxes.js';
-
+import DynamicCounter from '../../../components/DynamicCounter.jsx';
 
 const Taxes = () => {
     const {
         taxes, loading, error, searchTerm, setSearchTerm, refresh,
-        isModalOpen, setIsModalOpen, formError, onSubmitTax, 
+        isModalOpen, setIsModalOpen, formError, onSubmitTax,
         successMessage, handleCloseModal, handleEditClick,
         taxToEdit, actionLoading, statusError, handleToggleStatus,
         handleDeleteClick, handleCancelConfirm, onConfirmToggle, confirmConfig
@@ -30,29 +30,58 @@ const Taxes = () => {
            3. overflow-hidden: para que nada se salga del marco principal.
         */
         <div className="flex flex-col h-screen w-full gap-6 p-6 overflow-hidden box-border font-sans text-[#F5F5F5] bg-[#12121B]">
-            
-            {/* Encabezado: shrink-0 para que no se achique */}
-            <div className="shrink-0 flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <div>
-                    <h2 className="text-2xl font-bold text-[#F5F5F5]">
-                        Gestión de <span className="text-[#FFC857]">Impuestos</span>
-                    </h2>
-                    <p className="text-[#A0A0B0] text-sm">Administra las tasas impositivas de tus productos</p>
+            {/* --- ENCABEZADO Y ACCIONES (ESPACIADO REDUCIDO) --- */}
+            <div className="shrink-0 mb-4 flex flex-col md:flex-row md:items-center justify-between gap-3">
+                <div className="space-y-0.5 min-w-0"> {/* Reducido de space-y-1 a 0.5 */}
+                    {/* Título + Contador */}
+                    <div className="flex items-center gap-3 flex-nowrap">
+                        <h2 className="text-xl md:text-2xl font-bold text-[#F5F5F5] leading-tight truncate">
+                            Gestión de <span className="text-[#FFC857]">Impuestos</span>
+                        </h2>
+
+                        <div className="flex-shrink-0">
+                            <DynamicCounter
+                                count={taxes.length}
+                                label="Tasas"
+                                variant="warning"
+                                loading={loading}
+                            />
+                        </div>
+                    </div>
+
+                    <p className="text-[#A0A0B0] text-[11px] md:text-xs leading-none truncate">
+                        Administra las tasas impositivas de tus productos
+                    </p>
                 </div>
 
-                <div className="flex items-center gap-3">
-                    <div className="relative">
+                {/* Bloque de Herramientas (Más compacto) */}
+                <div className="flex items-center gap-2 w-full md:w-auto mt-1 md:mt-0">
+                    <div className="relative flex-1 md:flex-none md:w-56">
                         <InputSearch
                             searchTerm={searchTerm}
                             setSearchTerm={setSearchTerm}
-                            textPlaceholder={"Buscar impuestos..."}
+                            textPlaceholder="Buscar..."
                         />
                     </div>
-                    <ButtonRefresh onClick={refresh} isLoading={loading} />
-                    <ButtonAction action={() => setIsModalOpen(true)} text="+ Nuevo Impuesto" />
+
+                    <div className="flex items-center gap-1.5">
+                        <ButtonAction
+                            action={() => setIsModalOpen(true)}
+                            text={
+                                <span>
+                                    + Nuevo <span className="hidden md:inline">Impuesto</span>
+                                </span>
+                            }
+                            className="text-[11px] font-black px-3 py-2"
+                        />
+
+                        <ButtonRefresh
+                            onClick={refresh}
+                            isLoading={loading}
+                        />
+                    </div>
                 </div>
             </div>
-
             {/* CONTENEDOR DE LA LISTA: 
                flex-1: toma todo el espacio sobrante.
                min-h-0: evita que el flexbox se desborde si el contenido es grande.
@@ -86,8 +115,8 @@ const Taxes = () => {
             <ConfirmModal
                 isOpen={confirmConfig.isOpen}
                 title={isDeleteMode ? "Eliminar Impuesto" : (isActive ? "Desactivar Impuesto" : "Activar Impuesto")}
-                message={isDeleteMode 
-                    ? `¿Estás seguro de que deseas eliminar permanentemente el impuesto "${taxName}"?` 
+                message={isDeleteMode
+                    ? `¿Estás seguro de que deseas eliminar permanentemente el impuesto "${taxName}"?`
                     : `¿Deseas ${isActive ? 'desactivar' : 'activar'} el impuesto "${taxName}"?`}
                 variant={isDeleteMode ? "danger" : "warning"}
                 loading={actionLoading}

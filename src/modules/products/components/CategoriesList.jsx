@@ -1,23 +1,23 @@
 import { usePagination } from '../../../shared/hooks/usePagination';
-import PaginationControls from '../../../components/PaginationControls'; 
-
-export default function CategoriesList({ 
-    categories = [], 
-    loading, 
-    error, 
-    onToggleStatus, 
-    onEdit, 
-    onDelete, 
-    handleCopy, 
-    copiedId 
+import PaginationControls from '../../../components/PaginationControls';
+import CategoryCardsView from './CategoryCardsView';
+export default function CategoriesList({
+    categories = [],
+    loading,
+    error,
+    onToggleStatus,
+    onEdit,
+    onDelete,
+    handleCopy,
+    copiedId
 }) {
 
-    const { 
-        currentPage, 
-        setCurrentPage, 
-        paginatedItems, 
-        totalPages 
-    } = usePagination(categories, 10);
+    const {
+        currentPage,
+        setCurrentPage,
+        paginatedItems,
+        totalPages
+    } = usePagination(categories, 20);
 
     if (error) return (
         <div className="p-4 rounded-lg bg-[#E74C3C]/10 border border-[#E74C3C]/20 text-[#E74C3C] font-sans text-sm">
@@ -28,19 +28,34 @@ export default function CategoriesList({
     return (
         /* CAMBIO: Agregamos h-full y min-h para que se expanda */
         <div className="w-full h-full min-h-[600px] relative font-sans flex flex-col">
-            
+
             {loading && (
                 <div className="absolute inset-0 z-50 flex items-center justify-center bg-[#12121B]/40 backdrop-blur-[1px] rounded-xl transition-all">
                     <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-[#FFC857]"></div>
                 </div>
             )}
 
-            {/* CAMBIO: h-full y flex-1 para que este contenedor crezca */}
             <div className="bg-[#1E1E2F] border border-[#2C2C3E] rounded-xl shadow-xl overflow-hidden flex flex-col flex-1">
-                
-                {/* CAMBIO: Eliminamos el max-h fijo y usamos flex-1 para que use el espacio del padre */}
+
                 <div className="overflow-x-auto overflow-y-auto custom-scrollbar flex-1">
-                    <table className="w-full text-left border-collapse min-w-[800px] md:min-w-[1000px] table-fixed">
+
+                    {/* --- VISTA DE CARDS (Solo Mobile/Tablet: lg:hidden) --- */}
+                    <CategoryCardsView
+                        categories={categories}
+                        paginatedItems={paginatedItems}
+                        currentPage={currentPage}
+                        totalPages={totalPages}
+                        setCurrentPage={setCurrentPage}
+                        handleCopy={handleCopy}
+                        copiedId={copiedId}
+                        onToggleStatus={onToggleStatus}
+                        onEdit={onEdit}
+                        onDelete={onDelete}
+                        loading={loading}
+                    />
+
+                    {/* --- VISTA DE TABLA (Solo Desktop: hidden lg:table) --- */}
+                    <table className="hidden lg:table w-full text-left border-collapse min-w-[800px] md:min-w-[1000px] table-fixed">
                         <thead className="sticky top-0 z-20 bg-[#2C2C3E]">
                             <tr className="text-[#F5F5F5] uppercase text-[9px] md:text-[10px] tracking-widest font-bold">
                                 <th className="px-4 md:px-6 py-4 text-[#FFC857] w-[50px]">#</th>
@@ -54,8 +69,8 @@ export default function CategoriesList({
                         <tbody className={`divide-y divide-[#2C2C3E] transition-opacity duration-300 ${loading ? 'opacity-30' : 'opacity-100'}`}>
                             {paginatedItems.map((cat, index) => {
                                 const idStr = String(cat.id);
-                                const displayIndex = ((currentPage - 1) * 10) + index + 1;
-                                
+                                const displayIndex = ((currentPage - 1) * 20) + index + 1;
+
                                 return (
                                     <tr key={cat.id} className="hover:bg-[#2C2C3E]/40 transition-colors group">
                                         <td className="px-4 md:px-6 py-4 text-xs font-bold text-[#A0A0B0]">
@@ -68,7 +83,7 @@ export default function CategoriesList({
                                                     <span className="opacity-40">...</span>
                                                     {idStr.length > 6 ? idStr.slice(-6) : idStr}
                                                 </div>
-                                                <button 
+                                                <button
                                                     onClick={() => handleCopy?.(cat.id)}
                                                     className="ml-2 p-1.5 rounded-md bg-[#FFC857] text-[#1E1E2F] opacity-0 group-hover/id:opacity-100 transition-all hover:scale-110 active:scale-95 shadow-lg shadow-[#FFC857]/20"
                                                 >
@@ -78,9 +93,6 @@ export default function CategoriesList({
                                                         <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2" /></svg>
                                                     )}
                                                 </button>
-                                                {copiedId === cat.id && (
-                                                    <span className="absolute -top-7 left-0 text-[8px] font-bold text-[#FFC857] animate-bounce">¡COPIADO!</span>
-                                                )}
                                             </div>
                                         </td>
 
@@ -122,7 +134,7 @@ export default function CategoriesList({
                                                     className={`whitespace-nowrap px-2.5 py-1.5 rounded-lg text-[9px] font-black uppercase transition-all border ${cat.active
                                                         ? "border-[#E74C3C]/20 bg-[#E74C3C]/10 text-[#E74C3C] hover:bg-[#E74C3C] hover:text-white"
                                                         : "border-[#27AE60]/20 bg-[#27AE60]/10 text-[#27AE60] hover:bg-[#27AE60] hover:text-white"
-                                                    }`}
+                                                        }`}
                                                 >
                                                     {cat.active ? "Desactivar" : "Activar"}
                                                 </button>
@@ -155,10 +167,10 @@ export default function CategoriesList({
                     </table>
                 </div>
 
-                {/* CAMBIO: mt-auto asegura que la paginación siempre esté abajo si hay poco contenido */}
+                {/* --- PAGINACIÓN (Se muestra siempre abajo) --- */}
                 {categories.length > 0 && (
                     <div className="shrink-0 mt-auto border-t border-[#2C2C3E] bg-[#1E1E2F]">
-                        <PaginationControls 
+                        <PaginationControls
                             currentPage={currentPage}
                             totalPages={totalPages}
                             onPageChange={setCurrentPage}
@@ -166,7 +178,6 @@ export default function CategoriesList({
                     </div>
                 )}
             </div>
-
             {!loading && categories.length === 0 && (
                 <div className="text-center py-12 bg-[#1E1E2F] rounded-b-xl border-x border-b border-[#2C2C3E] text-[#A0A0B0] font-sans italic text-sm">
                     No se encontraron categorías registradas.

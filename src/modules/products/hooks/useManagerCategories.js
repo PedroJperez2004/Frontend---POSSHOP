@@ -6,12 +6,12 @@ import useUpdateStatusCategories from './useUpdateStatusCategories.js';
 import useDeleteCategories from './useDeleteCategories.js';
 
 export const useManagerCategories = () => {
-    // 📋 Lista principal
+    //  Lista principal
     const { categories, loading, error, list } = useListCategories();
     const [searchTerm, setSearchTerm] = useState("");
     const [successMessage, setSuccessMessage] = useState(null);
 
-    // 🗑️ Hook de Eliminación
+    //  Hook de Eliminación
     const {
         deleteCategory,
         error: deleteError,
@@ -19,14 +19,14 @@ export const useManagerCategories = () => {
         // loading: deleteLoading  //No se usó
     } = useDeleteCategories();
 
-    // 🔄 Hook de cambio de Estado
+    //  Hook de cambio de Estado
     const { updateStatus, error: statusError, setError: setStatusError } = useUpdateStatusCategories();
 
-    // ➕ Hook de Creación y 📝 Edición
+    // ➕ Hook de Creación y  Edición
     const { createCategory, error: createError, setError: setCreateError } = useCreateCategory();
     const { update, error: updateError, setError: setUpdateError } = useUpdateCategories();
 
-    // 🪟 Estados de UI
+    //  Estados de UI
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [actionLoading, setActionLoading] = useState(false);
 
@@ -39,7 +39,7 @@ export const useManagerCategories = () => {
 
     const [categoryToEdit, setCategoryToEdit] = useState(null);
 
-    // 🖱️ Manejadores de Modal de Formulario
+    //  Manejadores de Modal de Formulario
     const handleEditClick = (category) => {
         setCategoryToEdit(category);
         setIsModalOpen(true);
@@ -53,7 +53,7 @@ export const useManagerCategories = () => {
         if (setUpdateError) setUpdateError(null);
     };
 
-    // 🖱️ Manejadores de Modal de Confirmación
+    //  Manejadores de Modal de Confirmación
     const handleToggleStatus = (category) => {
         setConfirmConfig({ isOpen: true, category, mode: 'status' });
     };
@@ -68,7 +68,7 @@ export const useManagerCategories = () => {
         if (setDeleteError) setDeleteError(null);
     };
 
-    // 🔍 Lógica de filtrado
+    //  Lógica de filtrado
     const filteredCategories = useMemo(() => {
         const words = searchTerm.toLowerCase().trim().split(/\s+/);
         if (!words[0]) return categories;
@@ -82,7 +82,7 @@ export const useManagerCategories = () => {
         });
     }, [searchTerm, categories]);
 
-    // 🚀 Acción: Confirmar (Status o Delete)
+    //  Acción: Confirmar (Status o Delete)
     const onConfirmAction = async () => {
         const { category, mode } = confirmConfig;
         if (!category) return;
@@ -109,7 +109,7 @@ export const useManagerCategories = () => {
         }
     };
 
-    // 🚀 Acción: Enviar Formulario
+    //  Acción: Enviar Formulario
     const onSubmitCategory = async (e) => {
         e.preventDefault();
         const formData = new FormData(e.target);

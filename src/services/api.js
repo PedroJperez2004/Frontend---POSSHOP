@@ -2,7 +2,7 @@ import axios from "axios";
 
 const api = axios.create({
     baseURL: import.meta.env.VITE_API_URL,
-    withCredentials: true, // 👈 VITAL para que las cookies viajen
+    withCredentials: true, // VITAL para que las cookies viajen
 });
 
 api.interceptors.response.use(
@@ -14,7 +14,7 @@ api.interceptors.response.use(
         if (
             originalRequest?.url?.includes('/users/login') ||
             originalRequest?.url?.includes('/auth/refresh-token') ||
-            originalRequest._retry // 👈 Evita bucles infinitos si el refresh también da 401
+            originalRequest._retry //  Evita bucles infinitos si el refresh también da 401
         ) {
             return Promise.reject(error);
         }

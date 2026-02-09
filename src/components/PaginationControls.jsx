@@ -3,6 +3,7 @@ const PaginationControls = ({ currentPage, totalPages, onPageChange }) => {
 
     return (
         <div className="flex items-center justify-between px-6 py-4 bg-[#2C2C3E]/20 border-t border-[#2C2C3E]">
+            
             <span className="text-[10px] text-[#A0A0B0] font-medium uppercase tracking-widest">
                 Página {currentPage} de {totalPages}
             </span>
