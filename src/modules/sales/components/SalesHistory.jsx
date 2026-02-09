@@ -78,9 +78,9 @@ const SalesHistory = ({ sales = [], loading, error, onViewDetails, onReverse, ha
                         className="bg-[#2C2C3E] hover:bg-[#FFC857] hover:text-[#1E1E2F] px-3 py-1.5 rounded-lg text-[10px] font-black border border-[#3E3E52] transition-all flex items-center gap-2"
                     >
                         {sortOrder === 'desc' ? (
-                            <>MÁS RECIENTES <span className="text-xs">↓</span></>
+                            <>RECIENTES <span className="text-xs">↓</span></>
                         ) : (
-                            <>MÁS ANTIGUOS <span className="text-xs">↑</span></>
+                            <>ANTIGUOS <span className="text-xs">↑</span></>
                         )}
                     </button>
                 </div>
