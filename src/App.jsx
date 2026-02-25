@@ -18,8 +18,7 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
 
         {/* Dashboard con layout */}
-        <Route
-          path="/" element={<DashboardLayout />}>
+        <Route path="/" element={<DashboardLayout />}>
           {/* 1. Esta es la clave: Redirigir la raíz a ventas */}
           <Route index element={<Navigate to="/ventas" replace />} />
           <Route path="products" element={<ProductsPage />} />
@@ -28,8 +27,6 @@ function App() {
           <Route path="impuestos" element={<TaxesPage />} />
           <Route path="ventas" element={<SalesPage />} />
           <Route path="inventario" element={<InventoryPage />} />
-
-
 
         </Route>
       </Routes>
